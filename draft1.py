@@ -33,7 +33,7 @@ class MainApplication(tk.Frame):
     def create_widgets(self):
         """ initalizes widgets """
         tools = ["Tool 1", "Tool 2", "Tool 3", "Tool 4"]
-        print( tools )
+        # print( tools )
         
         var1 = tk.IntVar()
         var2 = tk.IntVar()
@@ -63,10 +63,13 @@ class MainApplication(tk.Frame):
         mb.submenu = tk.Menu(mb, tearoff=0)
 
         var9 = tk.IntVar()
-        menu.add_cascade(label="Poke", menu=mb.submenu)
+        var10= tk.IntVar()
+        menu.add_cascade(label="Employee", menu=mb.submenu)
         # submenu.add_cascade(label="poke", command=lambda: self.tool_log("rawr"))
-        mb.submenu.add_checkbutton(label="lalala", variable=var9, command=lambda:
-                self.select_employee(var9, "lalala"))
+        mb.submenu.add_checkbutton(label="Laura", variable=var9, command=lambda:
+                self.select_employee(var9, "Laura"))
+        mb.submenu.add_checkbutton(label="Monte", variable=var10, command=lambda:
+                self.select_employee(var10, "Monte"))
 
     def select_employee(self, result, employee_name):
         """ Selects the employee """
