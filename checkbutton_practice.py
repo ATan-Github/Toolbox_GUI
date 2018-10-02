@@ -14,10 +14,18 @@
 
 # mb.pack()
 # master.mainloop()
-tools = ["1", "2", "3" ]
 
-list_length = len(tools)
-presence = []
-for i in range(list_length):
-    presence.append(1)
-print(presence)
+#################################################
+# tools = ["1", "2", "3" ]
+
+# list_length = len(tools)
+# presence = []
+# for i in range(list_length):
+    # presence.append(1)
+# print(presence)
+###################################################
+apple = ["mom", "dad", "poo"]
+f = open('test.txt', 'a')
+f.write('hello hello\n')
+f.writelines( "%s " % item for item in apple)
+f.close()
