@@ -97,8 +97,9 @@ class MainApplication(tk.Frame):
 
     def print_log(self):
         """ prints the checkout log """
-        print(self.selected_employee)
-        print(toolz)
+        # print(self.selected_employee)
+        # print(toolz)
+        
 
         f = open('tool_log.txt', 'a')
         f.write(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S\n'))
