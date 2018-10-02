@@ -1,4 +1,4 @@
-""" Creates a GUI to check-in/out tools. 2nd draft """
+""" Creates a GUI to check-in/out tools. 3rd draft """
 
 try:
     # python 3.x
@@ -8,7 +8,11 @@ except ImportError:
     #python 2.x
     import Tkinter as tk
 
+import csv
+toolist = 'tools.csv'
+# selected_employee = ""
 toolz = []
+
 
 class MainApplication(tk.Frame):
     """ Runs the GUI """
@@ -22,6 +26,7 @@ class MainApplication(tk.Frame):
         self.configure_gui()
         self.create_widgets()
         self.create_menus()
+        
 
     def configure_gui(self):
         """ configures gui settings """
@@ -31,8 +36,14 @@ class MainApplication(tk.Frame):
 
     def create_widgets(self):
         """ initializes widgets """
-        tool_names = ["Tool 1", "Tool 2", "Tool 3", "Tool 4", "Tool 5", "Tool 6"]
+        tool_names = []
         tool_presence = []
+
+        with open(toolist, 'r') as csv_file:
+            csv_reader = csv.reader(csv_file)
+
+            for tool in csv_reader:
+                tool_names.append(tool)
 
         num_tools = len(tool_names)
         for i in range(num_tools):
@@ -42,7 +53,6 @@ class MainApplication(tk.Frame):
         tk.Button(self, text="checkout", command=self.checkout).grid(row=40, column=40)
         # create quit app button
         tk.Button(self, text="Quit", command=self.quit_app).grid(row=400, column=100)
-
 
     def make_checkbuttons(self, tool_names, tool_presence):
         """ Creates checkbuttons for tools """
@@ -88,6 +98,11 @@ class MainApplication(tk.Frame):
         """ prints the checkout log """
         print(self.selected_employee)
         print(toolz)
+
+        f = open('tool_log.txt', 'a')
+        f.write(self.selected_employee + " checked out: ")
+        f.writelines("%s " % item for item in toolz)
+        f.close()
 
     def checkout(self):
         """ initiates actions when checkout button is pressed """
