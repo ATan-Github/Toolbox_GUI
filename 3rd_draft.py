@@ -1,5 +1,6 @@
 """ Creates a GUI to check-in/out tools. 3rd draft """
-
+import datetime as dt
+import csv
 try:
     # python 3.x
     import Tkinter as tk
@@ -8,7 +9,7 @@ except ImportError:
     #python 2.x
     import Tkinter as tk
 
-import csv
+
 toolist = 'tools.csv'
 # selected_employee = ""
 toolz = []
@@ -100,8 +101,10 @@ class MainApplication(tk.Frame):
         print(toolz)
 
         f = open('tool_log.txt', 'a')
+        f.write(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S\n'))
         f.write(self.selected_employee + " checked out: ")
         f.writelines("%s " % item for item in toolz)
+        f.write("\n\n")
         f.close()
 
     def checkout(self):
