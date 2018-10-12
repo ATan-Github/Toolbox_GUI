@@ -1,0 +1,4 @@
+tool_log.txt
+*.swp
+*.swo
+*.pyc
