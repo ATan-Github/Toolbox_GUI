@@ -1,12 +1,13 @@
 """ Creates a GUI to check-in/out tools. 4th draft """
 import Tool_Object as Tl
+import Employee as Emp
 import datetime as dt
 try:
     import tkinter as tk
 except ImportError:
     import Tkinter as tk
-
 toolz = []
+
 
 
 class MainApplication(tk.Frame):
@@ -20,7 +21,6 @@ class MainApplication(tk.Frame):
         self.master = master
         self.configure_gui()
         self.create_widgets()
-        self.create_menus()
         
     def configure_gui(self):
         """ configures gui settings """
@@ -38,7 +38,7 @@ class MainApplication(tk.Frame):
         tk.Button(self, text="checkout", command=self.checkout).grid(row=40, column=40)
         # create quit app button
         tk.Button(self, text="Quit", command=self.quit_app).grid(row=400, column=100)
-
+         
 
         #create_menus ...... previously def create_menus(self):
         menu = tk.Menu(self.master)
@@ -48,29 +48,27 @@ class MainApplication(tk.Frame):
 
         menu.add_cascade(label="Employee", menu=mb.submenu)
 
-        employee_names = ["Panda", "Bob", "Pablo", "Mayo", "Porcupine"]
+        employee_names = []
         employee_selected = []
-        num_employees = len(employee_names)
-        for i in range(num_employees):
-            employee_selected.append(tk.IntVar())
-        for n in range(num_employees):
-            mb.submenu.add_checkbutton(label=employee_names[n], variable=employee_selected[n],
-                    command=lambda n=n: self.select_employee(employee_names[n], employee_selected[n]))
+
+        self.employees = Emp.Employee.create_employees(Emp.Employee(employee_names, employee_selected))
+        for n in range(len(self.employees[0])):
+            mb.submenu.add_checkbutton(label=self.employees[0][n], variable=self.employees[1][n])
 
     def make_checkbuttons(self, toolbox):
         """ Creates checkbuttons for tools """
         num_buttons = len(toolbox[0])
 
         for i in range(num_buttons):
-            tk.Checkbutton(self, text=toolbox[0][i], variable=toolbox[1][i], command=lambda i=i:
+            tk.Checkbutton(self, text=toolbox[0][i], bg="#66CDAA", selectcolor="#D49F9F", indicatoron=0, variable=toolbox[1][i], command=lambda i=i:
                 self.select_tools(toolbox[0][i], toolbox[1][i])).grid(row=i+1, sticky=tk.W)
 
-    def select_employee(self, employee_name, result):
-        """ selects the employee """
-        if result.get() == 1:
-            self.selected_employee = employee_name
-        else:
-            self.selected_employee = "No Employee Selected"
+    # def select_employee(self, employee_name, result):
+        # """ selects the employee """
+        # if result.get() == 1:
+            # self.selected_employee = employee_name
+        # else:
+            # self.selected_employee = "No Employee Selected"
 
     def select_tools(self, selected_tool, result):
         """ shows selected tools """
@@ -83,19 +81,33 @@ class MainApplication(tk.Frame):
         """ prints the checkout log """
         # print(self.selected_employee)
         # print(toolz)
-        
 
         f = open('tool_log.txt', 'a')
         f.write(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S\n'))
-        f.write(self.selected_employee + " checked out: ")
+        f.write("%s checked out: " % self.selected_employee)
         f.writelines("%s " % item for item in toolz)
         f.write("\n\n")
         f.close()
 
     def checkout(self):
         """ initiates actions when checkout button is pressed """
-        self.print_log()
-        self.quit_app()
+        num_selected = 0
+        index = 99
+        for i in range(len(self.employees[0])):
+            if self.employees[1][i].get() == 1:
+                num_selected += 1
+                index = i
+        if num_selected > 1:
+            print("No more than one employee can check out the same tool.")
+        elif num_selected < 1:
+            print("No employee selected.")
+        else:
+            self.selected_employee = self.employees[0][index]
+            self.print_log()
+            self.quit_app()
+        
+        # self.print_log()
+        # self.quit_app()
 
     def quit_app(self):
         """ closes window """

@@ -14,12 +14,12 @@ class Tool():
         self.tool_names = tool_names
         self.tool_presence = tool_presence
 
-    def create_toolbox(name, preesence):
+    def create_toolbox(self):
         with open(toolist, 'r') as csv_file:
             csv_reader = csv.reader(csv_file)
 
-        for tool in csv_reader:
-            self.tool_names.append(tool)
+            for tool in csv_reader:
+                self.tool_names.append(tool)
         
         num_tools = len(self.tool_names)
         for i in range(num_tools):
